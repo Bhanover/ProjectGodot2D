@@ -1,0 +1,209 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://Rocky Roads/Tilesets/tileset_forest.png" type="Texture" id=1]
+[ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Rocky Roads/Deco/sun.png" type="Texture" id=3]
+[ext_resource path="res://Rocky Roads/Objects/coin_gold.png" type="Texture" id=4]
+[ext_resource path="res://Rocky Roads/Deco/clouds.png" type="Texture" id=5]
+[ext_resource path="res://Rocky Roads/Deco/tree_c.png" type="Texture" id=6]
+[ext_resource path="res://Rocky Roads/Deco/tree.png" type="Texture" id=7]
+[ext_resource path="res://Rocky Roads/Deco/water_a_8frames.png" type="Texture" id=8]
+[ext_resource path="res://Rocky Roads/Enemies/bird.png" type="Texture" id=9]
+[ext_resource path="res://Rocky Roads/Backgrounds/clouds.png" type="Texture" id=10]
+
+[sub_resource type="ConvexPolygonShape2D" id=2]
+points = PoolVector2Array( 0, 0, 16, 0, 16, 16, 0, 16 )
+
+[sub_resource type="ConvexPolygonShape2D" id=3]
+points = PoolVector2Array( 0, 0, 16, 0, 16, 16, 0, 16 )
+
+[sub_resource type="TileSet" id=1]
+0/name = "tileset_forest.png 0"
+0/texture = ExtResource( 1 )
+0/tex_offset = Vector2( 0, 0 )
+0/modulate = Color( 1, 1, 1, 1 )
+0/region = Rect2( 64, 16, 16, 16 )
+0/tile_mode = 0
+0/occluder_offset = Vector2( 0, 0 )
+0/navigation_offset = Vector2( 0, 0 )
+0/shape_offset = Vector2( 0, 0 )
+0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+0/shape = SubResource( 2 )
+0/shape_one_way = false
+0/shape_one_way_margin = 1.0
+0/shapes = [ {
+"autotile_coord": Vector2( 0, 0 ),
+"one_way": false,
+"one_way_margin": 1.0,
+"shape": SubResource( 2 ),
+"shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
+} ]
+0/z_index = 0
+1/name = "tileset_forest.png 1"
+1/texture = ExtResource( 1 )
+1/tex_offset = Vector2( 0, 0 )
+1/modulate = Color( 1, 1, 1, 1 )
+1/region = Rect2( 32, 16, 16, 16 )
+1/tile_mode = 0
+1/occluder_offset = Vector2( 0, 0 )
+1/navigation_offset = Vector2( 0, 0 )
+1/shape_offset = Vector2( 0, 0 )
+1/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+1/shape = SubResource( 3 )
+1/shape_one_way = false
+1/shape_one_way_margin = 1.0
+1/shapes = [ {
+"autotile_coord": Vector2( 0, 0 ),
+"one_way": false,
+"one_way_margin": 1.0,
+"shape": SubResource( 3 ),
+"shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
+} ]
+1/z_index = 0
+2/name = "tileset_forest.png 2"
+2/texture = ExtResource( 1 )
+2/tex_offset = Vector2( 0, 0 )
+2/modulate = Color( 1, 1, 1, 1 )
+2/region = Rect2( 80, 16, 16, 16 )
+2/tile_mode = 0
+2/occluder_offset = Vector2( 0, 0 )
+2/navigation_offset = Vector2( 0, 0 )
+2/shape_offset = Vector2( 0, 0 )
+2/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+2/shape_one_way = false
+2/shape_one_way_margin = 0.0
+2/shapes = [  ]
+2/z_index = 0
+3/name = "clouds.png 3"
+3/texture = ExtResource( 5 )
+3/tex_offset = Vector2( 0, 0 )
+3/modulate = Color( 1, 1, 1, 1 )
+3/region = Rect2( 0, 0, 64, 16 )
+3/tile_mode = 0
+3/occluder_offset = Vector2( 0, 0 )
+3/navigation_offset = Vector2( 0, 0 )
+3/shape_offset = Vector2( 0, 0 )
+3/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+3/shape_one_way = false
+3/shape_one_way_margin = 0.0
+3/shapes = [  ]
+3/z_index = 0
+4/name = "tileset_forest.png 4"
+4/texture = ExtResource( 1 )
+4/tex_offset = Vector2( 0, 0 )
+4/modulate = Color( 1, 1, 1, 1 )
+4/region = Rect2( 64, 48, 32, 16 )
+4/tile_mode = 0
+4/occluder_offset = Vector2( 0, 0 )
+4/navigation_offset = Vector2( 0, 0 )
+4/shape_offset = Vector2( 0, 0 )
+4/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+4/shape_one_way = false
+4/shape_one_way_margin = 0.0
+4/shapes = [  ]
+4/z_index = 0
+5/name = "tree.png 5"
+5/texture = ExtResource( 7 )
+5/tex_offset = Vector2( 0, 0 )
+5/modulate = Color( 1, 1, 1, 1 )
+5/region = Rect2( 0, 0, 48, 48 )
+5/tile_mode = 0
+5/occluder_offset = Vector2( 0, 0 )
+5/navigation_offset = Vector2( 0, 0 )
+5/shape_offset = Vector2( 0, 0 )
+5/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+5/shape_one_way = false
+5/shape_one_way_margin = 0.0
+5/shapes = [  ]
+5/z_index = 0
+6/name = "coin_gold.png 6"
+6/texture = ExtResource( 4 )
+6/tex_offset = Vector2( 0, 0 )
+6/modulate = Color( 1, 1, 1, 1 )
+6/region = Rect2( 0, 0, 16, 16 )
+6/tile_mode = 0
+6/occluder_offset = Vector2( 0, 0 )
+6/navigation_offset = Vector2( 0, 0 )
+6/shape_offset = Vector2( 0, 0 )
+6/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+6/shape_one_way = false
+6/shape_one_way_margin = 0.0
+6/shapes = [  ]
+6/z_index = 0
+7/name = "tileset_forest.png 7"
+7/texture = ExtResource( 1 )
+7/tex_offset = Vector2( 0, 0 )
+7/modulate = Color( 1, 1, 1, 1 )
+7/region = Rect2( 48, 16, 16, 16 )
+7/tile_mode = 0
+7/occluder_offset = Vector2( 0, 0 )
+7/navigation_offset = Vector2( 0, 0 )
+7/shape_offset = Vector2( 0, 0 )
+7/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+7/shape_one_way = false
+7/shape_one_way_margin = 0.0
+7/shapes = [  ]
+7/z_index = 0
+
+[node name="Mundo" type="Node2D"]
+position = Vector2( -3, 1 )
+
+[node name="WaterA8Frames" type="Sprite" parent="."]
+position = Vector2( 18, -110 )
+scale = Vector2( 1.4375, 3.72656 )
+texture = ExtResource( 8 )
+
+[node name="Clouds" type="Sprite" parent="."]
+position = Vector2( 17, -85.5 )
+scale = Vector2( 1.42969, 1.82031 )
+texture = ExtResource( 10 )
+
+[node name="WaterA8Frames2" type="Sprite" parent="."]
+position = Vector2( 17, -1 )
+scale = Vector2( 1.43359, 1.92578 )
+texture = ExtResource( 8 )
+
+[node name="TileMap" type="TileMap" parent="."]
+position = Vector2( 24, -2 )
+tile_set = SubResource( 1 )
+cell_size = Vector2( 16, 16 )
+format = 1
+tile_data = PoolIntArray( -524299, 3, 0, -458757, 3, 0, -524287, 3, 0, -393226, 3, 0, -327689, 6, 0, -131080, 6, 0, -196603, 6, 0, -65546, 1, 0, -65545, 0, 0, -65544, 0, 0, -65543, 2, 0, -65537, 1, 0, -131072, 0, 0, -131071, 0, 0, -131070, 2, 0, -131069, 6, 0, -131067, 1, 0, -131066, 0, 0, -131065, 0, 0, -131064, 0, 0, -131063, 0, 0, -131062, 2, 0, -12, 6, 0, -11, 1, 0, -10, 4, 0, -8, 4, 0, -7, 0, 0, -6, 2, 0, -2, 1, 0, -1, 4, 0, -65535, 4, 0, -65534, 4, 0, -65533, 2, 0, -65531, 1, 0, -65530, 0, 0, -65529, 0, 0, -65528, 0, 0, -65527, 0, 0, -65526, 2, 0, 65524, 1, 0, 65525, 0, 0, 65526, 4, 0, 65527, 4, 0, 65528, 4, 0, 65529, 4, 0, 65530, 0, 0, 65531, 2, 0, 65532, 6, 0, 65533, 1, 0, 65534, 0, 0, 65535, 4, 0, 0, 4, 0, 2, 4, 0, 3, 2, 0, 5, 1, 0, 6, 0, 0, 7, 0, 0, 8, 0, 0, 9, 0, 0, 10, 2, 0, 131060, 0, 0, 131061, 4, 0, 131063, 4, 0, 131065, 4, 0, 131066, 0, 0, 131067, 2, 0, 131068, 1, 0, 131069, 0, 0, 131070, 0, 0, 131071, 4, 0, 65537, 4, 0, 65538, 4, 0, 65539, 2, 0, 65541, 1, 0, 65542, 0, 0, 65543, 0, 0, 65544, 0, 0, 65545, 0, 0, 65546, 2, 0 )
+
+[node name="KinematicBody2D" parent="." instance=ExtResource( 2 )]
+position = Vector2( 45, -45 )
+
+[node name="Camera2D" type="Camera2D" parent="KinematicBody2D"]
+position = Vector2( -28, -23 )
+current = true
+zoom = Vector2( 0.38, 0.32 )
+
+[node name="TreeC" type="Sprite" parent="."]
+position = Vector2( -118, -64 )
+rotation = -6.28319
+scale = Vector2( 1.16667, 1.29167 )
+texture = ExtResource( 6 )
+
+[node name="Bird" type="Sprite" parent="."]
+position = Vector2( -121.757, -122.568 )
+scale = Vector2( 0.628179, 1.01295 )
+texture = ExtResource( 9 )
+hframes = 5
+
+[node name="Bird2" type="Sprite" parent="."]
+position = Vector2( 152, -105 )
+scale = Vector2( 0.864622, 0.956843 )
+texture = ExtResource( 9 )
+hframes = 5
+
+[node name="Sun" type="Sprite" parent="."]
+position = Vector2( 171, -124 )
+scale = Vector2( 1.31579, 1.3125 )
+texture = ExtResource( 3 )
+hframes = 5
+frame = 4
+
+[node name="TreeC2" type="Sprite" parent="."]
+position = Vector2( 172.664, -64.6641 )
+scale = Vector2( 1.40267, 1.34733 )
+texture = ExtResource( 6 )
