@@ -1,10 +1,11 @@
+
+# Clase para el área que detecta la recogida de monedas
 extends Area2D
 
-signal coinColleted
-
+signal coinCollected
 
 func _on_Coin2D_body_entered(body):
-	emit_signal("coinColleted")
-	if body.get_name() == "Player":
+	if body.name == "Player":
+		body.add_coin()
+		emit_signal("coinCollected")
 		queue_free()
-		pass # Replace with function body.

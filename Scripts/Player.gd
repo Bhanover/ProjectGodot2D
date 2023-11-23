@@ -42,3 +42,7 @@ func _physics_process(delta):
 	
 	# Aplicar movimiento
 	motion = move_and_slide(motion, up)
+
+func add_coin():
+	var canvasLayer = get_tree().get_root().find_node("CanvasLayer",true,false);
+	canvasLayer.handleCoinCollected()
