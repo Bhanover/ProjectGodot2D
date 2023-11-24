@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://Rocky Roads/Tilesets/tileset_forest.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=2]
@@ -13,6 +13,8 @@
 [ext_resource path="res://Scenes/Coin.tscn" type="PackedScene" id=11]
 [ext_resource path="res://Scripts/CanvasLayer.gd" type="Script" id=12]
 [ext_resource path="res://Rocky Roads/Enemies/spikes.png" type="Texture" id=13]
+[ext_resource path="res://Scenes/Saw.tscn" type="PackedScene" id=14]
+[ext_resource path="res://Scenes/Enemy.tscn" type="PackedScene" id=15]
 
 [sub_resource type="ConvexPolygonShape2D" id=2]
 points = PoolVector2Array( 0, 0, 16, 0, 16, 16, 0, 16 )
@@ -310,6 +312,9 @@ corner_radius_bottom_left = 15
 [sub_resource type="ConvexPolygonShape2D" id=9]
 points = PoolVector2Array( 0, 16, 0, 0, 0, 0 )
 
+[sub_resource type="ConvexPolygonShape2D" id=11]
+points = PoolVector2Array( 7.931, 11.5575, 12.1172, 1.51059, 15.4662, 13.7902, 0.674873, 14.0693, 3.74477, 3.18507, 3.74477, 3.18507 )
+
 [sub_resource type="TileSet" id=10]
 0/name = "spikes.png 0"
 0/texture = ExtResource( 13 )
@@ -330,6 +335,12 @@ points = PoolVector2Array( 0, 16, 0, 0, 0, 0 )
 "one_way_margin": 1.0,
 "shape": SubResource( 9 ),
 "shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
+}, {
+"autotile_coord": Vector2( 0, 0 ),
+"one_way": false,
+"one_way_margin": 1.0,
+"shape": SubResource( 11 ),
+"shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
 } ]
 0/z_index = 0
 
@@ -337,79 +348,82 @@ points = PoolVector2Array( 0, 16, 0, 0, 0, 0 )
 position = Vector2( -29, 36 )
 
 [node name="WaterA8Frames" type="Sprite" parent="."]
-position = Vector2( 24, -113 )
+position = Vector2( -299, -257 )
 scale = Vector2( 1.4375, 3.80664 )
 texture = ExtResource( 8 )
 
 [node name="Clouds" type="Sprite" parent="."]
-position = Vector2( 24, -94 )
+position = Vector2( -297, -238 )
 scale = Vector2( 1.42969, 1.82031 )
 texture = ExtResource( 10 )
 
 [node name="WaterA8Frames2" type="Sprite" parent="."]
-position = Vector2( 14, 6 )
+position = Vector2( -309, -138 )
 scale = Vector2( 1.43359, 1.92578 )
 texture = ExtResource( 8 )
 
 [node name="TileMap" type="TileMap" parent="."]
-position = Vector2( 24, -2 )
+position = Vector2( -299, -146 )
 tile_set = SubResource( 1 )
 cell_size = Vector2( 16, 16 )
+collision_layer = 4
 format = 1
 tile_data = PoolIntArray( -524299, 3, 0, -458757, 3, 0, -524287, 3, 0, -393226, 3, 0, -65546, 1, 0, -65545, 0, 0, -65544, 0, 0, -65543, 2, 0, -65539, 16, 0, -65538, 16, 0, -65537, 16, 0, -131072, 16, 0, -131071, 15, 0, -131070, 16, 0, -131067, 1, 0, -131066, 0, 0, -131065, 0, 0, -131064, 0, 0, -131063, 0, 0, -131062, 2, 0, -11, 1, 0, -10, 4, 0, -8, 4, 0, -7, 0, 0, -6, 2, 0, -3, 16, 0, -2, 16, 0, -1, 16, 0, -65536, 16, 0, -65535, 13, 0, -65534, 13, 0, -65533, 16, 0, -65531, 1, 0, -65530, 0, 0, -65529, 0, 0, -65528, 0, 0, -65527, 0, 0, -65526, 2, 0, 65524, 1, 0, 65525, 0, 0, 65526, 4, 0, 65527, 4, 0, 65528, 4, 0, 65529, 4, 0, 65530, 0, 0, 65531, 2, 0, 65533, 1, 0, 65534, 4, 0, 65535, 4, 0, 0, 4, 0, 2, 13, 0, 3, 13, 0, 4, 16, 0, 5, 1, 0, 6, 0, 0, 7, 0, 0, 8, 0, 0, 9, 0, 0, 10, 2, 0, 131060, 0, 0, 131061, 4, 0, 131063, 4, 0, 131065, 4, 0, 131066, 0, 0, 131067, 2, 0, 131068, 1, 0, 131069, 4, 0, 131070, 4, 0, 131071, 4, 0, 65537, 13, 0, 65538, 13, 0, 65539, 13, 0, 65540, 16, 0, 65541, 13, 0, 65542, 0, 0, 65543, 0, 0, 65544, 0, 0, 65545, 0, 0, 65546, 2, 0 )
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
-position = Vector2( 45, -45 )
+position = Vector2( -278, -189 )
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 position = Vector2( -24, -15 )
 current = true
 zoom = Vector2( 0.38, 0.32 )
+smoothing_enabled = true
 
 [node name="TreeC" type="Sprite" parent="."]
-position = Vector2( -118, -64 )
+position = Vector2( -441, -208 )
 rotation = -6.28319
 scale = Vector2( 1.16667, 1.29167 )
 texture = ExtResource( 6 )
 
 [node name="Sun" type="Sprite" parent="."]
-position = Vector2( 171, -124 )
+position = Vector2( -152, -268 )
 scale = Vector2( 1.31579, 1.3125 )
 texture = ExtResource( 3 )
 hframes = 5
 frame = 4
 
 [node name="TreeC2" type="Sprite" parent="."]
-position = Vector2( 165, -61 )
+position = Vector2( -158, -205 )
 scale = Vector2( 1.40267, 1.34733 )
 z_index = 1
 texture = ExtResource( 6 )
 
 [node name="Bird" parent="." instance=ExtResource( 9 )]
-position = Vector2( 17, -113 )
+position = Vector2( -306, -257 )
 
 [node name="Bird2" parent="." instance=ExtResource( 9 )]
-position = Vector2( 162, -99 )
+position = Vector2( -161, -243 )
 
 [node name="Bird3" parent="." instance=ExtResource( 9 )]
-position = Vector2( -136, -94 )
+position = Vector2( -459, -238 )
 
 [node name="Coin" parent="." instance=ExtResource( 11 )]
-position = Vector2( -124, -45 )
+position = Vector2( -447, -189 )
 
 [node name="Coin2" parent="." instance=ExtResource( 11 )]
-position = Vector2( -118, -88 )
+position = Vector2( -441, -232 )
 
 [node name="Coin3" parent="." instance=ExtResource( 11 )]
-position = Vector2( -58, -29 )
+position = Vector2( -381, -173 )
 
 [node name="Coin5" parent="." instance=ExtResource( 11 )]
-position = Vector2( 166, -85 )
+position = Vector2( -157, -229 )
 
 [node name="Coin6" parent="." instance=ExtResource( 11 )]
-position = Vector2( 134, -45 )
+position = Vector2( -189, -189 )
 
 [node name="Area2D" type="Area2D" parent="."]
+position = Vector2( -323, -144 )
 script = ExtResource( 7 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
@@ -417,42 +431,54 @@ position = Vector2( -9, 66 )
 shape = SubResource( 7 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
-follow_viewport_enable = true
+offset = Vector2( 400, 375 )
+scale = Vector2( 4, 4 )
+transform = Transform2D( 4, 0, 0, 4, 400, 375 )
 script = ExtResource( 12 )
 
 [node name="Panel" type="Panel" parent="CanvasLayer"]
-margin_left = -199.0
-margin_top = -105.0
-margin_right = -154.0
-margin_bottom = -80.0
+margin_left = -99.0
+margin_top = -89.5
+margin_right = -54.0
+margin_bottom = -64.5
 custom_styles/panel = SubResource( 8 )
 
 [node name="Sprite" type="Sprite" parent="CanvasLayer"]
-position = Vector2( -190, -93 )
-scale = Vector2( 1.125, 1 )
+position = Vector2( -89.75, -77.5 )
+scale = Vector2( 1.20312, 1 )
 texture = ExtResource( 4 )
 hframes = 8
 
 [node name="Label" type="Label" parent="CanvasLayer"]
-margin_left = -181.0
-margin_top = -100.0
-margin_right = -140.0
-margin_bottom = -86.0
+margin_left = -81.5
+margin_top = -84.25
+margin_right = -40.5
+margin_bottom = -70.25
 text = ":"
 
 [node name="CoinsCollectedText" type="Label" parent="CanvasLayer"]
-margin_left = -176.0
-margin_top = -99.0
-margin_right = -136.0
-margin_bottom = -85.0
+margin_left = -76.0
+margin_top = -83.5
+margin_right = -36.0
+margin_bottom = -69.5
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 text = "00"
 
 [node name="Splites" type="Area2D" parent="."]
+position = Vector2( -323, -144 )
 
 [node name="TileMap" type="TileMap" parent="Splites"]
 tile_set = SubResource( 10 )
+cell_size = Vector2( 16, 16 )
 collision_use_parent = true
 format = 1
+tile_data = PoolIntArray( -131078, 0, 0, -196608, 0, 0 )
+
+[node name="Saw" parent="." instance=ExtResource( 14 )]
+position = Vector2( -303, -217 )
+
+[node name="Enemy" parent="." instance=ExtResource( 15 )]
+position = Vector2( -191, -187 )
 
 [connection signal="body_entered" from="Area2D" to="Area2D" method="_on_Area2D_body_entered"]
+[connection signal="body_entered" from="Splites" to="Player" method="_on_Splites_body_entered"]

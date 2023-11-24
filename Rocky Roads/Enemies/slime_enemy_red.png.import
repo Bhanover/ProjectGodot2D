@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/saw.png-cbd15bc2c3c5702e1b99c0f12c4db8fc.stex"
+path="res://.import/slime_enemy_red.png-7302fc01208417117e1fe8a9bf4cbc35.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Rocky Roads/Enemies/saw.png"
-dest_files=[ "res://.import/saw.png-cbd15bc2c3c5702e1b99c0f12c4db8fc.stex" ]
+source_file="res://Rocky Roads/Enemies/slime_enemy_red.png"
+dest_files=[ "res://.import/slime_enemy_red.png-7302fc01208417117e1fe8a9bf4cbc35.stex" ]
 
 [params]
 

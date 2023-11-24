@@ -46,3 +46,13 @@ func _physics_process(delta):
 func add_coin():
 	var canvasLayer = get_tree().get_root().find_node("CanvasLayer",true,false);
 	canvasLayer.handleCoinCollected()
+
+#Damage
+func _on_Splites_body_entered(body):
+	if body.get_name() == "Player":
+		print("nos hemos pinchado")
+		get_tree().reload_current_scene()
+	
+func _loseLife():
+	print("Nos hemos pinchado ,perdemos vida")
+	get_tree().reload_current_scene()
