@@ -883,7 +883,11 @@ __meta__ = {
 [node name="ColorRect" type="ColorRect" parent="PantallaRoja"]
 margin_right = 103.0
 margin_bottom = 59.0
-color = Color( 0.501961, 0.141176, 0, 0.45098 )
+color = Color( 1, 0, 0, 0.329412 )
+
+[node name="MessageLabel" type="Label" parent="."]
+margin_right = 40.0
+margin_bottom = 14.0
 
 [connection signal="body_entered" from="Area2D" to="Area2D" method="_on_Area2D_body_entered"]
 [connection signal="body_entered" from="Splites" to="Player" method="_on_Splites_body_entered"]

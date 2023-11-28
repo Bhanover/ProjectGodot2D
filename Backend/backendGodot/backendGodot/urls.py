@@ -16,7 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from godotapp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('registrar', views.registrar_usuario),
+    path('iniciar_sesion', views.iniciar_sesion),
+    path('actualizar_vidas', views.actualizar_vidas)
+
 ]

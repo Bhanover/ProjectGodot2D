@@ -2,7 +2,7 @@
 extends KinematicBody2D
 
 
-var vidas = 5
+var vidas = 2
 var invulnerable = false
 var tiempo_invulnerabilidad = 2.0  # Duración de la invulnerabilidad en segundos
 const sprintSpeed = 150 
@@ -16,10 +16,12 @@ const gravity = 15
 onready var sprite = $Sprite
 onready var animationPlayer = $AnimationPlayer
 var motion = Vector2()
-
+onready var http_request = $HTTPRequest
 var current_speed = 0
 var target_speed = 0
 const acceleration_rate = 0.5  
+onready var message_label = $MessageLabel
+onready var respawn_point = get_node("/root/Mundo/RespawnPoint")
 
 func _physics_process(delta):
 	motion.y += gravity
@@ -83,6 +85,12 @@ func _on_Splites_body_entered(body):
 		_loseLife()
 
 onready var pantalla_roja = get_node("/root/Mundo/PantallaRoja/ColorRect")
+func _ready():
+	if http_request.is_connected("request_completed", self, "_on_HTTPRequest_request_completed"):
+		print("Señal conectada correctamente.")
+	else:
+		print("Error al conectar la señal.")
+	pantalla_roja.modulate.a = 0
 
 func _loseLife():
 	if invulnerable:
@@ -92,13 +100,53 @@ func _loseLife():
 	vidas -= 1
 	if vidas <= 0:
 		print("Juego terminado")
-		# Lógica para terminar el juego o reiniciar
+		respawn_player()  # Lógica para reiniciar el juego o volver al inicio
+		actualizar_vidas_en_servidor()
 	else:
 		hacer_invulnerable()
 		iniciar_parpadeo()
-func _ready():
-	pantalla_roja.modulate.a = 0  # Establecer la opacidad inicial a 0
 
+func respawn_player():
+	# Mover al jugador al punto de reaparición
+	self.global_position = respawn_point.global_position
+	# Restablecer vidas o cualquier otro estado necesario
+	vidas = 2  # O el número que corresponda
+	#get_tree().reload_current_scene()
+
+func actualizar_vidas_en_servidor():
+	var url = "http://127.0.0.1:8000/actualizar_vidas"
+	print( "nombre del usuario "+Session.get_user_name())
+	var datos = {"username": Session.get_user_name(), "vidas_gastadas": 1}
+	print(url)
+	http_request.request(url, [], true, HTTPClient.METHOD_POST, JSON.print(datos))
+	print("Estado de la petición HTTP: ", http_request.get_http_client_status())
+
+
+
+func _on_HTTPRequest_request_completed(result, response_code, headers, body):
+	print("dentro")
+	var response = JSON.parse(body.get_string_from_utf8())
+	if response_code == 200:
+		if "vidas_totales gastadas" in response:
+			print("Vidas totales actualizadas: ", response["vidas_totales gastadas"])
+		else:
+			display_message("Respuesta exitosa, pero no se encontró la clave esperada en la respuesta.")
+	else:
+		if "mensaje" in response:
+			display_message("Error: " + str(response_code) + " - " + response["mensaje"])
+		else:
+			display_message("Error: " + str(response_code) + " - Respuesta desconocida")
+
+
+
+
+func display_message(text):
+	message_label.text = text
+
+
+
+
+ 
 func hacer_invulnerable():
 	invulnerable = true
 	var tween = Tween.new()
@@ -123,3 +171,7 @@ func iniciar_parpadeo():
 func terminar_invulnerabilidad():
 	invulnerable = false
 	pantalla_roja.modulate.a = 0  # Restaurar la opacidad
+
+ 
+
+ 

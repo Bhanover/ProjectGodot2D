@@ -72,3 +72,11 @@ playback_speed = 2.0
 anims/Idle = SubResource( 2 )
 anims/RESET = SubResource( 3 )
 anims/Walk = SubResource( 4 )
+
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
+
+[node name="MessageLabel" type="Label" parent="."]
+margin_right = 40.0
+margin_bottom = 14.0
+
+[connection signal="request_completed" from="HTTPRequest" to="." method="_on_HTTPRequest_request_completed"]
