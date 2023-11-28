@@ -81,7 +81,9 @@ func _on_Splites_body_entered(body):
 	if body.get_name() == "Player":
 		print("nos hemos pinchado")
 		_loseLife()
-	
+
+onready var pantalla_roja = get_node("/root/Mundo/PantallaRoja/ColorRect")
+
 func _loseLife():
 	if invulnerable:
 		return
@@ -93,17 +95,31 @@ func _loseLife():
 		# Lógica para terminar el juego o reiniciar
 	else:
 		hacer_invulnerable()
+		iniciar_parpadeo()
+func _ready():
+	pantalla_roja.modulate.a = 0  # Establecer la opacidad inicial a 0
 
 func hacer_invulnerable():
 	invulnerable = true
 	var tween = Tween.new()
 	add_child(tween)
-	tween.interpolate_property(sprite, "modulate", sprite.modulate, Color(1, 1, 1, 0.5), tiempo_invulnerabilidad, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	tween.interpolate_callback(self, tiempo_invulnerabilidad, "terminar_invulnerabilidad")
 	tween.start()
 
+func iniciar_parpadeo():
+	var tween_rojo = Tween.new()
+	add_child(tween_rojo)
+	var duracion_parpadeo = 0.2  # Duración de cada parpadeo
+	var veces = tiempo_invulnerabilidad / duracion_parpadeo
+	for i in range(int(veces)):
+		tween_rojo.interpolate_property(pantalla_roja, "modulate:a", 0.5, 0, duracion_parpadeo, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT, i * duracion_parpadeo)
+		tween_rojo.interpolate_property(pantalla_roja, "modulate:a", 0, 0.5, duracion_parpadeo, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT, i * duracion_parpadeo + duracion_parpadeo * 0.5)
+
+	# Asegurarse de que la opacidad sea 0 al final de la invulnerabilidad
+	tween_rojo.interpolate_property(pantalla_roja, "modulate:a", 0.5, 0, duracion_parpadeo, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT, tiempo_invulnerabilidad)
+	tween_rojo.start()
+
+
 func terminar_invulnerabilidad():
 	invulnerable = false
-	sprite.modulate = Color(1, 1, 1, 1)  # Restaurar la opacidad
-
-
+	pantalla_roja.modulate.a = 0  # Restaurar la opacidad

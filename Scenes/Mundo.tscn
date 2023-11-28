@@ -873,16 +873,17 @@ texture = ExtResource( 16 )
 position = Vector2( 1596, -185 )
 texture = ExtResource( 17 )
 
-[node name="Tree" type="Sprite" parent="Tree2"]
-position = Vector2( -172, -1 )
-texture = ExtResource( 17 )
-
-[node name="CanvasLayer2" type="CanvasLayer" parent="."]
+[node name="PantallaRoja" type="CanvasLayer" parent="."]
 scale = Vector2( 10, 10 )
 transform = Transform2D( 10, 0, 0, 10, 0, 0 )
 __meta__ = {
 "_editor_description_": ""
 }
+
+[node name="ColorRect" type="ColorRect" parent="PantallaRoja"]
+margin_right = 103.0
+margin_bottom = 59.0
+color = Color( 0.501961, 0.141176, 0, 0.45098 )
 
 [connection signal="body_entered" from="Area2D" to="Area2D" method="_on_Area2D_body_entered"]
 [connection signal="body_entered" from="Splites" to="Player" method="_on_Splites_body_entered"]
