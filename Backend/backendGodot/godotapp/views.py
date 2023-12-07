@@ -50,9 +50,26 @@ def actualizar_vidas(request):
             usuario = Usuario.objects.get(username=username)
             estadisticas, created = EstadisticasJuego.objects.get_or_create(usuario=usuario)
             estadisticas.vidas_totales_gastadas += vidas_gastadas
+            vidas_restantes = estadisticas.vidas_actuales - estadisticas.vidas_totales_gastadas
+
             estadisticas.save()
-            return JsonResponse({"vidas_totales gastadas": estadisticas.vidas_totales_gastadas}, status=200)
+            return JsonResponse({
+                "vidas_totales_gastadas": estadisticas.vidas_totales_gastadas,
+                "vidas_restantes": vidas_restantes}, status=200)
         except Usuario.DoesNotExist:
             return JsonResponse({"mensaje": "Usuario no encontrado"}, status=404)
 
     return JsonResponse({"mensaje": "Método no permitido"}, status=405)
+def obtener_vidas(request):
+    username = request.GET.get('username')
+
+    try:
+        usuario = Usuario.objects.get(username=username)
+        estadisticas = EstadisticasJuego.objects.get(usuario=usuario)
+        vidas_restantes = estadisticas.vidas_actuales - estadisticas.vidas_totales_gastadas
+        return JsonResponse({
+            "vidas_restantes": vidas_restantes,
+            "vidas_totales_gastadas": estadisticas.vidas_totales_gastadas
+        }, status=200)
+    except Usuario.DoesNotExist:
+        return JsonResponse({"mensaje": "Usuario no encontrado"}, status=404)

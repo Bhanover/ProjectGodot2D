@@ -79,4 +79,7 @@ anims/Walk = SubResource( 4 )
 margin_right = 40.0
 margin_bottom = 14.0
 
+[node name="HTTPRequestGetVidas" type="HTTPRequest" parent="."]
+
 [connection signal="request_completed" from="HTTPRequest" to="." method="_on_HTTPRequest_request_completed"]
+[connection signal="request_completed" from="HTTPRequestGetVidas" to="." method="_on_HTTPRequestGetVidas_request_completed"]
