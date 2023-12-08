@@ -51,7 +51,6 @@ def actualizar_vidas(request):
             estadisticas, created = EstadisticasJuego.objects.get_or_create(usuario=usuario)
             estadisticas.vidas_totales_gastadas += vidas_gastadas
             vidas_restantes = estadisticas.vidas_actuales - estadisticas.vidas_totales_gastadas
-            print(vidas_gastadas,"-",vidas_restantes)
             estadisticas.save()
             return JsonResponse({
                 "vidas_totales_gastadas": estadisticas.vidas_totales_gastadas,
@@ -67,11 +66,11 @@ def actualizar_estadisticas(request):
         data = json.loads(request.body)
         usuario = Usuario.objects.get(username=data['username'])
         estadisticas, created = EstadisticasJuego.objects.get_or_create(usuario=usuario)
-
         estadisticas.oro_recolectado = data['oro_recolectado']
         estadisticas.oro_recolectado_total += data['oro_recolectado']
         estadisticas.mayor_oro_en_una_partida = max(estadisticas.mayor_oro_en_una_partida, data['mayor_coins_en_una_partida'])
         estadisticas.save()
+        print("esto son las coins",data['oro_recolectado'],"-",data['mayor_coins_en_una_partida'])
 
         # Incluir los datos actualizados en la respuesta
         return JsonResponse({
@@ -80,3 +79,44 @@ def actualizar_estadisticas(request):
             "oro_recolectado_total": estadisticas.oro_recolectado_total,
             "mayor_oro_en_una_partida": estadisticas.mayor_oro_en_una_partida
         })
+@csrf_exempt
+def sumar_vida(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        username = data.get('username')
+        
+        try:
+            usuario = Usuario.objects.get(username=username)
+            estadisticas, created = EstadisticasJuego.objects.get_or_create(usuario=usuario)
+            estadisticas.vidas_actuales += 1  # Sumar una vida
+            vidas_restantes = estadisticas.vidas_actuales - estadisticas.vidas_totales_gastadas
+
+            estadisticas.save()
+            return JsonResponse({
+                "mensaje": "Vida añadida con éxito",
+                "vidas_actuales": vidas_restantes
+            }, status=200)
+        except Usuario.DoesNotExist:
+            return JsonResponse({"mensaje": "Usuario no encontrado"}, status=404)
+
+    return JsonResponse({"mensaje": "Método no permitido"}, status=405)
+@csrf_exempt
+def obtener_vidas_actuales(request):
+    if request.method == "GET":
+        username = request.GET.get('username')
+
+        if not username:
+            return JsonResponse({"mensaje": "Nombre de usuario no proporcionado"}, status=400)
+
+        try:
+            usuario = Usuario.objects.get(username=username)
+            estadisticas = EstadisticasJuego.objects.get(usuario=usuario)
+            vidas_restantes = estadisticas.vidas_actuales - estadisticas.vidas_totales_gastadas
+ 
+            return JsonResponse({"vidas_actuales": vidas_restantes}, status=200)
+        except Usuario.DoesNotExist:
+            return JsonResponse({"mensaje": "Usuario no encontrado"}, status=404)
+        except EstadisticasJuego.DoesNotExist:
+            return JsonResponse({"mensaje": "Estadísticas no encontradas"}, status=404)
+
+    return JsonResponse({"mensaje": "Método no permitido"}, status=405)

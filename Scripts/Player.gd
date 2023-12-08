@@ -23,6 +23,7 @@ onready var sprite = $Sprite
 onready var animationPlayer = $AnimationPlayer
 onready var http_request = $HTTPRequest
 onready var http_request_coins = $HTTPRequestCoins
+onready var http_request_suma_vida = $HTTPRequestSumaVida
 onready var message_label = $MessageLabel
 onready var respawn_point = get_node("/root/Mundo/RespawnPoint")
 onready var music_player = get_node("/root/Mundo/MusicMundo")
@@ -109,15 +110,36 @@ func pausar_juego():
 	menu_pause.visible = true
 	menu_activo = true
 	get_tree().paused = true
-
-
-# Función para manejar la recolección de monedas
+signal vidas_actualizadas(new_vida_count)
 func add_coin():
 	coins += 1 
 	var canvasLayer = get_tree().get_root().find_node("CanvasLayer", true, false)
 
 	if canvasLayer:
 		canvasLayer.handleCoinCollected(coins) 
+func add_vida():
+	vidas += 1  # Incrementar vidas
+	var canvasLayer = get_tree().get_root().find_node("CanvasLayer", true, false)
+	if canvasLayer:
+		canvasLayer.handleVidaCollected(vidas)  # Actualizar el contador de vidas en la UI
+	sumar_vida_en_servidor()
+func _on_HTTPRequestSumaVida_request_completed(result, response_code, headers, body):
+	var response = JSON.parse(body.get_string_from_utf8())
+	if response.error == OK and response_code == 200:
+		var new_vida_count = response.result["vidas_actuales"]
+		print("Respuesta del servidor:", response.result)
+		var canvasLayer = get_tree().get_root().find_node("CanvasLayer", true, false)
+		if canvasLayer:
+			canvasLayer.handleVidaCollected(new_vida_count)
+	else:
+		print("Error al recibir datos:", response.error)
+func sumar_vida_en_servidor():
+	var url = "http://127.0.0.1:8000/sumar_vida"  # Asegúrate de que la URL es correcta
+	var datos = {"username": Session.get_user_name()}
+	var headers = ["Content-Type: application/json"]
+	http_request_suma_vida.request(url, headers, true, HTTPClient.METHOD_POST, JSON.print(datos))
+# Función para manejar la recolección de monedas
+ 
 
 # Función para detectar colisión y manejar daño
 func _on_Splites_body_entered(body):
@@ -130,6 +152,7 @@ onready var pantalla_roja = get_node("/root/Mundo/PantallaRoja/ColorRect")
 
 # Configuración inicial del nodo
 func _ready():
+	add_to_group("Player")
 	if http_request.is_connected("request_completed", self, "_on_HTTPRequest_request_completed"):
 		print("Señal conectada correctamente.")
 	else:
@@ -139,6 +162,7 @@ func _ready():
 	menu_pause_volumen.connect("pressed", self, "_on_BotonConfiguracionVolumen_pressed")
 	slider_volumen.connect("value_changed", self, "_on_SliderVolumen_value_changed")
 	boton_silencio.connect("pressed", self, "_on_BotonSilencio_pressed")
+	http_request_suma_vida.connect("request_completed", self, "_on_HTTPRequestSumaVida_request_completed")
 
 	 # Configuración inicial del volumen
 	var volumen_inicial = 0 # Ajusta esto al nivel de volumen inicial deseado
@@ -155,8 +179,8 @@ func actualizar_etiquetas_vidas(vidas_gastadas, vidas_restantes):
 	print("gola")
 	print(control)
 	# Obtén las etiquetas de vidas gastadas y vidas restantes desde el nodo control_panel
-	var label_vidas_gastadas = control.get_node("LabelVidasGastadas")
-	var label_vidas_restantes = control.get_node("LabelVidasRestantes")
+	var label_vidas_gastadas = control.get_node("Panel/LabelVidasGastadas")
+	var label_vidas_restantes = control.get_node("Panel/LabelVidasRestantes")
  
  
 	# Actualiza el texto de las etiquetas
@@ -174,12 +198,13 @@ func _loseLife(caida = false):
 		death_sound.play() 
 		# Actualizar estadísticas, reiniciar monedas, etc.
 		actualizar_estadisticas_en_servidor()
-		reset_coins()
+	 
 		actualizar_vidas_en_servidor()
 		print("Juego terminado")
+		reset_coins()
 		reset_coins_ui() 
 		respawn_player()
-
+ 
 		# Inicia un temporizador para esperar 5 segundos antes de reiniciar la música
 		 # Establece un temporizador para reiniciar la música
 		var temporizador_musica = Timer.new()
@@ -195,19 +220,7 @@ func _loseLife(caida = false):
 		hacer_invulnerable()
 		iniciar_parpadeo()
 # Función para reiniciar las monedas
-func reset_coins():
-
-	var coins = get_tree().get_nodes_in_group("coins_group")  # Asegúrate de que tus monedas estén en este grupo
-
-	for coin in coins:
-
-		coin.reset_coin()
-		
-func reset_coins_ui():
-	var canvasLayer = get_tree().get_root().find_node("CanvasLayer", true, false)
-	if canvasLayer:
-		canvasLayer.handleCoinCollected(0)  # Reinicia el contador de monedas en la UI
-
+ 
 func actualizar_estadisticas_en_servidor():
 	max_coins_record = max(coins, max_coins_record)
 	var url = "http://127.0.0.1:8000/actualizar_estadisticas"
@@ -237,9 +250,9 @@ func actualizar_etiquetas_moneda(datos):
 	var monedas_totales = datos["oro_recolectado_total"]
 	var max_monedas = datos["mayor_oro_en_una_partida"]
 
-	var label_coin = control.get_node("LabelCoin")
-	var label_coin_total = control.get_node("LabelCoinTotal")
-	var label_max_coin = control.get_node("LabelMaxCoin")
+	var label_coin = control.get_node("Panel/LabelCoin")
+	var label_coin_total = control.get_node("Panel/LabelCoinTotal")
+	var label_max_coin = control.get_node("Panel/LabelMaxCoin")
 
 	label_coin.text = "Monedas Actuales: " + str(monedas_actuales)
 	label_coin_total.text = "Monedas Totales: " + str(monedas_totales)
@@ -257,6 +270,18 @@ func actualizar_vidas_en_servidor():
 	var url = "http://127.0.0.1:8000/actualizar_vidas"
 	var datos = {"username": Session.get_user_name(), "vidas_gastadas": 1}
 	http_request.request(url, [], true, HTTPClient.METHOD_POST, JSON.print(datos))
+func reset_coins():
+
+	var coins = get_tree().get_nodes_in_group("coins_group")  # Asegúrate de que tus monedas estén en este grupo
+
+	for coin in coins:
+
+		coin.reset_coin()
+		
+func reset_coins_ui():
+	var canvasLayer = get_tree().get_root().find_node("CanvasLayer", true, false)
+	if canvasLayer:
+		canvasLayer.handleCoinCollected(0)  # Reinicia el contador de monedas en la UI
 
 # Manejo de respuestas HTTP
 func _on_HTTPRequest_request_completed(result, response_code, headers, body):
@@ -273,6 +298,8 @@ func _on_HTTPRequest_request_completed(result, response_code, headers, body):
 				var vidas_restantes = data["vidas_restantes"]
 				print(vidas_totales_gastadas)
 				print("vidas")
+				var canvasLayer = get_tree().get_root().find_node("CanvasLayer", true, false)
+				canvasLayer.handleVidaCollected(vidas_restantes)
 				actualizar_etiquetas_vidas(vidas_totales_gastadas, vidas_restantes)
 				mostrar_panel_temporalmente()
 			else:

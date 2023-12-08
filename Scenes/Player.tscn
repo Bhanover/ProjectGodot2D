@@ -89,5 +89,8 @@ stream = ExtResource( 3 )
 [node name="DeathSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 4 )
 
+[node name="HTTPRequestSumaVida" type="HTTPRequest" parent="."]
+
 [connection signal="request_completed" from="HTTPRequest" to="." method="_on_HTTPRequest_request_completed"]
 [connection signal="request_completed" from="HTTPRequestCoins" to="." method="_on_HTTPRequestCoins_request_completed"]
+[connection signal="request_completed" from="HTTPRequestSumaVida" to="." method="_on_HTTPRequestSumaVida_request_completed"]

@@ -23,7 +23,9 @@ urlpatterns = [
     path('registrar', views.registrar_usuario),
     path('iniciar_sesion', views.iniciar_sesion),
     path('actualizar_vidas', views.actualizar_vidas),
-    path('actualizar_estadisticas', views. actualizar_estadisticas)
+    path('actualizar_estadisticas', views. actualizar_estadisticas),
+    path('sumar_vida', views.sumar_vida),
+    path('obtener_vidas_actuales', views.obtener_vidas_actuales),
 
 
     

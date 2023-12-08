@@ -2,25 +2,25 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/tileset_snow.png-4a697156adf487543ce764b057773cf9.stex"
+path="res://.import/LVUEnU.png-3c88ede7020731306b857133e9007a85.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Rocky Roads/Tilesets/tileset_snow.png"
-dest_files=[ "res://.import/tileset_snow.png-4a697156adf487543ce764b057773cf9.stex" ]
+source_file="res://Rocky Roads/images/LVUEnU.png"
+dest_files=[ "res://.import/LVUEnU.png-3c88ede7020731306b857133e9007a85.stex" ]
 
 [params]
 
-compress/mode=3
+compress/mode=0
 compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=false
+flags/filter=true
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

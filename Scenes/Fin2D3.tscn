@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Rocky Roads/Objects/sign_arrow.png" type="Texture" id=1]
+[ext_resource path="res://Scripts/Fin2D3.gd" type="Script" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 9, 96.5 )
+
+[node name="Fin" type="Node2D"]
+
+[node name="Fin2D3" type="Area2D" parent="."]
+script = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Fin2D3"]
+position = Vector2( -1, -80.5 )
+shape = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="Fin2D3"]
+texture = ExtResource( 1 )
+
+[connection signal="body_entered" from="Fin2D3" to="Fin2D3" method="_on_Fin2D3_body_entered"]
