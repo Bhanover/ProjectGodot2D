@@ -1,3 +1,4 @@
+#CanvasLayer.gd
 extends CanvasLayer
 
 var coins = 0
@@ -8,10 +9,7 @@ func _ready():
 	# Actualizar el texto de monedas recolectadas
 	$CoinsCollectedText.text = str(coins)
 
-func handleCoinCollected():
+func handleCoinCollected(new_coin_count):
 	print("Coin Collected")
-	coins += 1
+	coins = new_coin_count
 	$CoinsCollectedText.text = str(coins) # Actualizar el contador de monedas en la UI
-	
-	if coins == 3:
-		get_tree().change_scene("res://Scenes/Mundo" + str(int(get_tree().current_scene.name)+1)+".tscn")

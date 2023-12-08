@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=2]
+[gd_scene load_steps=48 format=2]
 
 [ext_resource path="res://Rocky Roads/Tilesets/tileset_forest.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://Scripts/DeathShot2D.gd" type="Script" id=7]
 [ext_resource path="res://Rocky Roads/Deco/water_a_8frames.png" type="Texture" id=8]
 [ext_resource path="res://Scenes/Bird.tscn" type="PackedScene" id=9]
+[ext_resource path="res://music/Alexey_Anisimov_-_8-bit_Fun.mp3" type="AudioStream" id=10]
 [ext_resource path="res://Scenes/Coin.tscn" type="PackedScene" id=11]
 [ext_resource path="res://Scripts/CanvasLayer.gd" type="Script" id=12]
 [ext_resource path="res://Rocky Roads/Enemies/spikes.png" type="Texture" id=13]
@@ -674,121 +675,117 @@ position = Vector2( -149.999, -409 )
 [node name="Bird3" parent="." instance=ExtResource( 9 )]
 position = Vector2( -447.999, -404 )
 
-[node name="Coin" parent="." instance=ExtResource( 11 )]
+[node name="coins_group" parent="." instance=ExtResource( 11 )]
 position = Vector2( -243.999, -376 )
 
-[node name="Coin4" parent="Coin" instance=ExtResource( 11 )]
+[node name="Coin4" parent="coins_group" instance=ExtResource( 11 )]
 position = Vector2( -508, 25 )
 
-[node name="Coin7" parent="Coin" instance=ExtResource( 11 )]
+[node name="Coin7" parent="coins_group" instance=ExtResource( 11 )]
 position = Vector2( -1095, 3 )
 
-[node name="Coin8" parent="Coin" instance=ExtResource( 11 )]
+[node name="Coin8" parent="coins_group" instance=ExtResource( 11 )]
 position = Vector2( -987, 27 )
 
-[node name="Coin9" parent="Coin" instance=ExtResource( 11 )]
+[node name="Coin9" parent="coins_group" instance=ExtResource( 11 )]
 position = Vector2( -916, 9 )
 
-[node name="Coin10" parent="Coin" instance=ExtResource( 11 )]
+[node name="Coin10" parent="coins_group" instance=ExtResource( 11 )]
 position = Vector2( -1033, 59 )
 
-[node name="Coin11" parent="Coin" instance=ExtResource( 11 )]
+[node name="Coin11" parent="coins_group" instance=ExtResource( 11 )]
 position = Vector2( -771, 37 )
 
-[node name="Coin12" parent="Coin" instance=ExtResource( 11 )]
+[node name="Coin12" parent="coins_group" instance=ExtResource( 11 )]
 position = Vector2( -833, -29 )
 
-[node name="Coin13" parent="Coin" instance=ExtResource( 11 )]
+[node name="Coin13" parent="coins_group" instance=ExtResource( 11 )]
 position = Vector2( -706, 39 )
 
-[node name="Coin14" parent="Coin" instance=ExtResource( 11 )]
+[node name="Coin14" parent="coins_group" instance=ExtResource( 11 )]
 position = Vector2( -741, 35 )
 
-[node name="Coin15" parent="Coin" instance=ExtResource( 11 )]
+[node name="Coin15" parent="coins_group" instance=ExtResource( 11 )]
 position = Vector2( -598, 8 )
 
-[node name="Coin16" parent="Coin" instance=ExtResource( 11 )]
+[node name="Coin16" parent="coins_group" instance=ExtResource( 11 )]
 position = Vector2( -443, 38 )
 
-[node name="Coin17" parent="Coin" instance=ExtResource( 11 )]
+[node name="Coin17" parent="coins_group" instance=ExtResource( 11 )]
 position = Vector2( -485, -39 )
 
-[node name="Coin18" parent="Coin" instance=ExtResource( 11 )]
+[node name="Coin18" parent="coins_group" instance=ExtResource( 11 )]
 position = Vector2( -309, 75 )
 
-[node name="Coin19" parent="Coin" instance=ExtResource( 11 )]
+[node name="Coin19" parent="coins_group" instance=ExtResource( 11 )]
 position = Vector2( -215, 35 )
 
-[node name="Coin20" parent="Coin" instance=ExtResource( 11 )]
+[node name="Coin20" parent="coins_group" instance=ExtResource( 11 )]
 position = Vector2( 272, 43 )
 
-[node name="Coin21" parent="Coin" instance=ExtResource( 11 )]
+[node name="Coin21" parent="coins_group" instance=ExtResource( 11 )]
 position = Vector2( 413, 23 )
 
-[node name="Coin22" parent="Coin" instance=ExtResource( 11 )]
+[node name="Coin22" parent="coins_group" instance=ExtResource( 11 )]
 position = Vector2( 341, -21 )
 
-[node name="Coin23" parent="Coin" instance=ExtResource( 11 )]
+[node name="Coin23" parent="coins_group" instance=ExtResource( 11 )]
 position = Vector2( 573, 23 )
 
-[node name="Coin24" parent="Coin" instance=ExtResource( 11 )]
+[node name="Coin24" parent="coins_group" instance=ExtResource( 11 )]
 position = Vector2( 523, 40 )
 
-[node name="Coin25" parent="Coin" instance=ExtResource( 11 )]
+[node name="Coin25" parent="coins_group" instance=ExtResource( 11 )]
 position = Vector2( 627, -22 )
 
-[node name="Coin26" parent="Coin" instance=ExtResource( 11 )]
+[node name="Coin26" parent="coins_group" instance=ExtResource( 11 )]
 position = Vector2( 701, 37 )
 
-[node name="Coin27" parent="Coin" instance=ExtResource( 11 )]
+[node name="Coin27" parent="coins_group" instance=ExtResource( 11 )]
 position = Vector2( 909, 55 )
 
-[node name="Coin28" parent="Coin" instance=ExtResource( 11 )]
+[node name="Coin28" parent="coins_group" instance=ExtResource( 11 )]
 position = Vector2( 1004, 35 )
 
-[node name="Coin29" parent="Coin" instance=ExtResource( 11 )]
+[node name="Coin29" parent="coins_group" instance=ExtResource( 11 )]
 position = Vector2( 1163, 17 )
 
-[node name="Coin30" parent="Coin" instance=ExtResource( 11 )]
+[node name="Coin30" parent="coins_group" instance=ExtResource( 11 )]
 position = Vector2( 1245, 35 )
 
-[node name="Coin31" parent="Coin" instance=ExtResource( 11 )]
+[node name="Coin31" parent="coins_group" instance=ExtResource( 11 )]
 position = Vector2( 1481, 39 )
 
-[node name="Coin32" parent="Coin" instance=ExtResource( 11 )]
+[node name="Coin32" parent="coins_group" instance=ExtResource( 11 )]
 position = Vector2( 1586, 35 )
 
-[node name="Coin33" parent="Coin" instance=ExtResource( 11 )]
+[node name="Coin33" parent="coins_group" instance=ExtResource( 11 )]
 position = Vector2( 1698, 33 )
 
-[node name="Coin34" parent="Coin" instance=ExtResource( 11 )]
+[node name="Coin34" parent="coins_group" instance=ExtResource( 11 )]
 position = Vector2( 1867, 23 )
 
-[node name="Coin35" parent="Coin" instance=ExtResource( 11 )]
+[node name="Coin35" parent="coins_group" instance=ExtResource( 11 )]
 position = Vector2( 1772, -2 )
 
-[node name="Coin36" parent="Coin" instance=ExtResource( 11 )]
+[node name="Coin36" parent="coins_group" instance=ExtResource( 11 )]
 position = Vector2( 1818, 10 )
 
-[node name="Coin2" parent="Coin" instance=ExtResource( 11 )]
+[node name="Coin2" parent="coins_group" instance=ExtResource( 11 )]
 position = Vector2( -158, -19 )
 
-[node name="Coin3" parent="Coin" instance=ExtResource( 11 )]
+[node name="Coin3" parent="coins_group" instance=ExtResource( 11 )]
 position = Vector2( -126, 37 )
 
-[node name="Coin5" parent="Coin" instance=ExtResource( 11 )]
+[node name="Coin5" parent="coins_group" instance=ExtResource( 11 )]
 position = Vector2( 98, -19 )
 
-[node name="Coin6" parent="Coin" instance=ExtResource( 11 )]
+[node name="Coin6" parent="coins_group" instance=ExtResource( 11 )]
 position = Vector2( 66, 21 )
 
 [node name="Area2D" type="Area2D" parent="."]
 position = Vector2( -317.999, -305 )
 script = ExtResource( 7 )
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D"]
-position = Vector2( 2558.25, 129 )
-shape = SubResource( 7 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2( 2560, 128 )
@@ -947,11 +944,29 @@ autowrap = true
 clip_text = true
 uppercase = true
 
+[node name="LabelCoin" type="Label" parent="MenuVidas"]
+margin_left = 342.0
+margin_top = 42.0
+margin_right = 530.0
+margin_bottom = 87.0
+
+[node name="LabelCoinTotal" type="Label" parent="MenuVidas"]
+margin_left = 315.0
+margin_top = 135.0
+margin_right = 524.0
+margin_bottom = 174.0
+
+[node name="LabelMaxCoin" type="Label" parent="MenuVidas"]
+margin_left = 324.0
+margin_top = 366.0
+margin_right = 499.0
+margin_bottom = 407.0
+
 [node name="MessageLabel" type="Label" parent="."]
-margin_left = 99.0
-margin_top = -29.0
-margin_right = 1117.0
-margin_bottom = 562.0
+margin_left = 100.0
+margin_top = -27.0
+margin_right = 1118.0
+margin_bottom = 564.0
 text = "saaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 
 [node name="PauseMenu" type="CanvasLayer" parent="."]
@@ -989,7 +1004,52 @@ margin_right = 99.018
 margin_bottom = 10.756
 text = "Salir"
 
+[node name="BotonConfiguracionVolumen" type="Button" parent="PauseMenu/Panel"]
+margin_left = 231.0
+margin_top = 235.0
+margin_right = 498.0
+margin_bottom = 264.0
+text = "Volumen"
+
+[node name="PanelVolumen" type="Panel" parent="PauseMenu"]
+visible = false
+margin_right = 1029.0
+margin_bottom = 594.0
+
+[node name="SliderVolumen" type="HSlider" parent="PauseMenu/PanelVolumen"]
+margin_left = 409.0
+margin_top = 139.0
+margin_right = 667.0
+margin_bottom = 246.0
+min_value = -40.0
+max_value = 40.0
+
+[node name="BotonSilencio" type="Button" parent="PauseMenu/PanelVolumen"]
+margin_left = 428.0
+margin_top = 252.0
+margin_right = 607.0
+margin_bottom = 296.0
+text = "Silencio"
+
+[node name="VolverMenu" type="Button" parent="PauseMenu/PanelVolumen"]
+margin_left = 447.0
+margin_top = 330.0
+margin_right = 594.0
+margin_bottom = 384.0
+text = "Volver al Menu de Pausa"
+
+[node name="MusicMundo" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 10 )
+autoplay = true
+
+[node name="TemporizadorMusica" type="Timer" parent="MusicMundo"]
+
 [connection signal="body_entered" from="Area2D" to="Area2D" method="_on_Area2D_body_entered"]
 [connection signal="body_entered" from="Splites" to="Player" method="_on_Splites_body_entered"]
 [connection signal="pressed" from="PauseMenu/Panel/Continue" to="Player" method="_on_Continue_pressed"]
 [connection signal="pressed" from="PauseMenu/Panel/Salir" to="Player" method="_on_Salir_pressed"]
+[connection signal="pressed" from="PauseMenu/Panel/BotonConfiguracionVolumen" to="Player" method="_on_BotonConfiguracionVolumen_pressed"]
+[connection signal="value_changed" from="PauseMenu/PanelVolumen/SliderVolumen" to="Player" method="_on_SliderVolumen_value_changed"]
+[connection signal="pressed" from="PauseMenu/PanelVolumen/BotonSilencio" to="Player" method="_on_BotonSilencio_pressed"]
+[connection signal="pressed" from="PauseMenu/PanelVolumen/VolverMenu" to="Player" method="_on_VolverMenu_pressed"]
+[connection signal="timeout" from="MusicMundo/TemporizadorMusica" to="Player" method="_on_TemporizadorMusica_timeout"]

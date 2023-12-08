@@ -22,19 +22,27 @@ const gravity = 15  # Fuerza de gravedad
 onready var sprite = $Sprite
 onready var animationPlayer = $AnimationPlayer
 onready var http_request = $HTTPRequest
+onready var http_request_coins = $HTTPRequestCoins
 onready var message_label = $MessageLabel
 onready var respawn_point = get_node("/root/Mundo/RespawnPoint")
- 
+onready var music_player = get_node("/root/Mundo/MusicMundo")
+onready var damage_sound = $DamageSound
+onready var death_sound = $DeathSound
 # Variables de movimiento
 var motion = Vector2()  # Vector de movimiento
 var current_speed = 0  # Velocidad actual
 var target_speed = 0  # Velocidad objetivo
 const acceleration_rate = 0.5  # Tasa de aceleración
 var jump_count = 0
- 
+var coins = 0
+var max_coins_record = 0
 onready var menu_pause = get_node("/root/Mundo/PauseMenu")
- 
- 
+onready var menu_pause_volumen = get_node("/root/Mundo/PauseMenu/PanelVolumen") 
+onready var slider_volumen =  get_node("/root/Mundo/PauseMenu/PanelVolumen/SliderVolumen") 
+onready var boton_silencio = get_node("/root/Mundo/PauseMenu/PanelVolumen/BotonSilencio")
+
+var volumen_anterior = 0.0
+var esta_silenciado = false
 # Procesamiento de la física en cada frame
 func _physics_process(delta):
 	if  !menu_activo:
@@ -105,9 +113,11 @@ func pausar_juego():
 
 # Función para manejar la recolección de monedas
 func add_coin():
+	coins += 1 
 	var canvasLayer = get_tree().get_root().find_node("CanvasLayer", true, false)
-	canvasLayer.handleCoinCollected()
 
+	if canvasLayer:
+		canvasLayer.handleCoinCollected(coins) 
 
 # Función para detectar colisión y manejar daño
 func _on_Splites_body_entered(body):
@@ -124,6 +134,17 @@ func _ready():
 		print("Señal conectada correctamente.")
 	else:
 		print("Error al conectar la señal.")
+	http_request_coins.connect("request_completed", self, "_on_HTTPRequestCoins_request_completed")
+	http_request.connect("request_completed", self, "_on_HTTPRequest_request_completed")
+	menu_pause_volumen.connect("pressed", self, "_on_BotonConfiguracionVolumen_pressed")
+	slider_volumen.connect("value_changed", self, "_on_SliderVolumen_value_changed")
+	boton_silencio.connect("pressed", self, "_on_BotonSilencio_pressed")
+
+	 # Configuración inicial del volumen
+	var volumen_inicial = 0 # Ajusta esto al nivel de volumen inicial deseado
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), volumen_inicial)
+	slider_volumen.value = volumen_inicial
+	volumen_anterior = volumen_inicial
 	pantalla_roja.modulate.a = 0
 func set_lives_to_zero():
 	vidas = 0
@@ -142,27 +163,95 @@ func actualizar_etiquetas_vidas(vidas_gastadas, vidas_restantes):
 	label_vidas_gastadas.text = "Vidas Gastadas: " + str(vidas_gastadas)
 	label_vidas_restantes.text = "Vidas Restantes: " + str(vidas_restantes)
 
-func _loseLife():
-	if invulnerable:
+func _loseLife(caida = false):
+	if invulnerable and not caida:
 		return
 	vidas -= 1
+	damage_sound.play()
 	if vidas <= 0:
-		print("Juego terminado")
-		 
-		respawn_player()  # Lógica para reiniciar el juego o volver al inicio
+		# Detiene la música inmediatamente
+		music_player.stop()
+		death_sound.play() 
+		# Actualizar estadísticas, reiniciar monedas, etc.
+		actualizar_estadisticas_en_servidor()
+		reset_coins()
 		actualizar_vidas_en_servidor()
-		
+		print("Juego terminado")
+		reset_coins_ui() 
+		respawn_player()
+
+		# Inicia un temporizador para esperar 5 segundos antes de reiniciar la música
+		 # Establece un temporizador para reiniciar la música
+		var temporizador_musica = Timer.new()
+		temporizador_musica.wait_time = 6  # 5 segundos
+		temporizador_musica.one_shot = true
+		temporizador_musica.connect("timeout", self, "_on_TemporizadorMusica_timeout")
+		add_child(temporizador_musica)
+		temporizador_musica.start()
+	 
 
 
 	else:
 		hacer_invulnerable()
 		iniciar_parpadeo()
+# Función para reiniciar las monedas
+func reset_coins():
+
+	var coins = get_tree().get_nodes_in_group("coins_group")  # Asegúrate de que tus monedas estén en este grupo
+
+	for coin in coins:
+
+		coin.reset_coin()
+		
+func reset_coins_ui():
+	var canvasLayer = get_tree().get_root().find_node("CanvasLayer", true, false)
+	if canvasLayer:
+		canvasLayer.handleCoinCollected(0)  # Reinicia el contador de monedas en la UI
+
+func actualizar_estadisticas_en_servidor():
+	max_coins_record = max(coins, max_coins_record)
+	var url = "http://127.0.0.1:8000/actualizar_estadisticas"
+	var datos = {
+		"username": Session.get_user_name(),
+		"oro_recolectado": coins,  # Cantidad de monedas recolectadas hasta la muerte en la partida actual
+		"mayor_coins_en_una_partida": max_coins_record
+	}
+	var headers = ["Content-Type: application/json"]
+	http_request_coins.request(url, headers, true, HTTPClient.METHOD_POST, JSON.print(datos))
+	coins = 0  # Reiniciar el contador de monedas
+	
+
+func _on_HTTPRequestCoins_request_completed(result, response_code, headers, body):
+	var response = JSON.parse(body.get_string_from_utf8())
+	if response.error == OK and response_code == 200:
+		print("Datos recibidos correctamente. Respuesta del servidor:", response.result)
+		if "mensaje" in response.result:
+			print(response.result["mensaje"])
+		if "oro_recolectado" in response.result and "oro_recolectado_total" in response.result and "mayor_oro_en_una_partida" in response.result:
+			actualizar_etiquetas_moneda(response.result)
+	else:
+		print("Error al recibir datos:", response.error)
+
+func actualizar_etiquetas_moneda(datos):
+	var monedas_actuales = datos["oro_recolectado"]
+	var monedas_totales = datos["oro_recolectado_total"]
+	var max_monedas = datos["mayor_oro_en_una_partida"]
+
+	var label_coin = control.get_node("LabelCoin")
+	var label_coin_total = control.get_node("LabelCoinTotal")
+	var label_max_coin = control.get_node("LabelMaxCoin")
+
+	label_coin.text = "Monedas Actuales: " + str(monedas_actuales)
+	label_coin_total.text = "Monedas Totales: " + str(monedas_totales)
+	label_max_coin.text = "Máximo de Monedas en una Partida: " + str(max_monedas)
+
 
 # Función para reiniciar la posición del jugador
 func respawn_player():
 	self.global_position = respawn_point.global_position
 	vidas = 2  # Restablecer vidas
 	_on_Temporizador_timeout()
+	 
 # Función para actualizar vidas en el servidor
 func actualizar_vidas_en_servidor():
 	var url = "http://127.0.0.1:8000/actualizar_vidas"
@@ -176,14 +265,14 @@ func _on_HTTPRequest_request_completed(result, response_code, headers, body):
 	# Comprobar si el análisis fue exitoso
 	if response.error == OK:
 		var data = response.result
-
+		print("Datos recibidos correctamente. Respuesta del servidor:", response.result)
 	
 		if response_code == 200:
 			if "vidas_totales_gastadas" in data:
 				var vidas_totales_gastadas = data["vidas_totales_gastadas"]
 				var vidas_restantes = data["vidas_restantes"]
 				print(vidas_totales_gastadas)
-				
+				print("vidas")
 				actualizar_etiquetas_vidas(vidas_totales_gastadas, vidas_restantes)
 				mostrar_panel_temporalmente()
 			else:
@@ -210,17 +299,20 @@ func hacer_invulnerable():
 	tween.start()
 func mostrar_panel_temporalmente():
 	control.visible = true
+	print("hola estoy en panel temporal")
 	menu_activo = true
 	var temporizador = Timer.new()
-	temporizador.wait_time = 5  # 5 segundos
+	temporizador.wait_time = 6  # 5 segundos
 	temporizador.one_shot = true  # Solo se ejecuta una vez
 	temporizador.connect("timeout", self, "_on_Temporizador_timeout")
 	add_child(temporizador)
 	temporizador.start()
+	 
 
 func _on_Temporizador_timeout():
 	control.visible = false
 	menu_activo = false
+	 
 
 # Función para iniciar un efecto de parpadeo durante la invulnerabilidad
 func iniciar_parpadeo():
@@ -260,3 +352,35 @@ func _on_Continue_pressed():
 func _on_Salir_pressed():
 	print("Salir presionado")
 	get_tree().quit()
+
+ 
+
+
+func _on_TemporizadorMusica_timeout():
+	death_sound.stop()
+	music_player.play()  
+
+
+func _on_BotonConfiguracionVolumen_pressed():
+	menu_pause_volumen.visible = true
+
+func _on_SliderVolumen_value_changed(value):
+	if esta_silenciado:
+		esta_silenciado = false
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), value)
+	volumen_anterior = value
+
+
+func _on_BotonSilencio_pressed():
+	if esta_silenciado:
+		slider_volumen.value = volumen_anterior
+		AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), volumen_anterior)
+		esta_silenciado = false
+	else:
+		volumen_anterior = slider_volumen.value  # Guardar el valor del slider antes de silenciar
+		AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), -80.0)  # Silenciar completamente
+		slider_volumen.value = -80.0
+		esta_silenciado = true
+
+func _on_VolverMenu_pressed():
+	menu_pause_volumen.visible = false

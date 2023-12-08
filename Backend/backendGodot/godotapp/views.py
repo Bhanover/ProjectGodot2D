@@ -45,13 +45,13 @@ def actualizar_vidas(request):
         data = json.loads(request.body)
         username = data.get('username')
         vidas_gastadas = int(data.get('vidas_gastadas', 0))  # Convierte a entero
-
+        print(vidas_gastadas)
         try:
             usuario = Usuario.objects.get(username=username)
             estadisticas, created = EstadisticasJuego.objects.get_or_create(usuario=usuario)
             estadisticas.vidas_totales_gastadas += vidas_gastadas
             vidas_restantes = estadisticas.vidas_actuales - estadisticas.vidas_totales_gastadas
-
+            print(vidas_gastadas,"-",vidas_restantes)
             estadisticas.save()
             return JsonResponse({
                 "vidas_totales_gastadas": estadisticas.vidas_totales_gastadas,
@@ -60,16 +60,23 @@ def actualizar_vidas(request):
             return JsonResponse({"mensaje": "Usuario no encontrado"}, status=404)
 
     return JsonResponse({"mensaje": "Método no permitido"}, status=405)
-def obtener_vidas(request):
-    username = request.GET.get('username')
 
-    try:
-        usuario = Usuario.objects.get(username=username)
-        estadisticas = EstadisticasJuego.objects.get(usuario=usuario)
-        vidas_restantes = estadisticas.vidas_actuales - estadisticas.vidas_totales_gastadas
+@csrf_exempt
+def actualizar_estadisticas(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        usuario = Usuario.objects.get(username=data['username'])
+        estadisticas, created = EstadisticasJuego.objects.get_or_create(usuario=usuario)
+
+        estadisticas.oro_recolectado = data['oro_recolectado']
+        estadisticas.oro_recolectado_total += data['oro_recolectado']
+        estadisticas.mayor_oro_en_una_partida = max(estadisticas.mayor_oro_en_una_partida, data['mayor_coins_en_una_partida'])
+        estadisticas.save()
+
+        # Incluir los datos actualizados en la respuesta
         return JsonResponse({
-            "vidas_restantes": vidas_restantes,
-            "vidas_totales_gastadas": estadisticas.vidas_totales_gastadas
-        }, status=200)
-    except Usuario.DoesNotExist:
-        return JsonResponse({"mensaje": "Usuario no encontrado"}, status=404)
+            "mensaje": "Estadísticas actualizadas con éxito",
+            "oro_recolectado": estadisticas.oro_recolectado,
+            "oro_recolectado_total": estadisticas.oro_recolectado_total,
+            "mayor_oro_en_una_partida": estadisticas.mayor_oro_en_una_partida
+        })

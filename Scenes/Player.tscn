@@ -1,7 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Rocky Roads/Enemies/slime_blue.png" type="Texture" id=1]
 [ext_resource path="res://Scripts/Player.gd" type="Script" id=2]
+[ext_resource path="res://music/punch-140236.tres" type="AudioStream" id=3]
+[ext_resource path="res://music/intro-final-36094.mp3" type="AudioStream" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 7, 5.5 )
@@ -79,7 +81,13 @@ anims/Walk = SubResource( 4 )
 margin_right = 40.0
 margin_bottom = 14.0
 
-[node name="HTTPRequestGetVidas" type="HTTPRequest" parent="."]
+[node name="HTTPRequestCoins" type="HTTPRequest" parent="."]
+
+[node name="DamageSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 3 )
+
+[node name="DeathSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 4 )
 
 [connection signal="request_completed" from="HTTPRequest" to="." method="_on_HTTPRequest_request_completed"]
-[connection signal="request_completed" from="HTTPRequestGetVidas" to="." method="_on_HTTPRequestGetVidas_request_completed"]
+[connection signal="request_completed" from="HTTPRequestCoins" to="." method="_on_HTTPRequestCoins_request_completed"]
